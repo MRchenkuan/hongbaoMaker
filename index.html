@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>单身狗拯救计划，来，这次是520的红包，拿去晒。</title>
+    <style>
+        body{padding: 0;margin: 0}
+        #input input{color:grey;margin-bottom:1rem;height:6rem;width:75%;border:none;border-bottom:10px solid #7fb80e;font-size: 4rem;line-height: 6rem}
+        #input span{color:grey;margin-bottom:1rem;height:6rem;width:75%;border:none;border-bottom:10px solid #7fb80e;font-size: 4rem;line-height: 6rem}
+        html{font-size: 1em;}
+    </style>
+
+</head>
+<body>
+<p style="color:#f58220;font-size: 4em">使用说明</p>
+<div style="color:#4f5555;font-size: 4em">
+    <p>你说人家过节过的好好的，宽哥你捣什么蛋，对于这样恶劣行为，我只想说，干的漂亮！<br><br>
+        >>来，这么填:<br>1.哪个倒霉蛋儿发给你的<br>2.在相册里选个他的头像<br>3.填个温暖的数字<br>4.选个时间</p>
+    <p>然后长按图片，保存下来，就能发朋友圈尽情的装逼了。</p>
+    <p style="color:#202020;">好了咱们开始：</p>
+</div>
+
+    <div id="input" style="font-size: 4em">
+        <input id="name" type="text" placeholder="1.那个倒霉蛋儿叫啥名？"><br>
+        <span style="width: 75%;position: relative;">2.给他选个头像<input id="avt" type="file" style="position:absolute;top:0;left:0;opacity: 0;height: 100%;width: 100%;" accept="image/png,image/jpg,image/jpeg"></span><br>
+        <input id="mon" type="number" placeholder="3.给你发了多少？"><br>
+        <span style="width: 75%;position: relative;"><span>4.</span><input id="time" type="time" style="width: 50%" placeholder="选个时间"></span><br>
+    </div>
+
+<img id="cvs" style="width: 100%;margin: 0;"/>
+<img hidden="hidden" id="defaultAvt" src="./avt.jpg" style="width: 100%;margin: 0;"/>
+<canvas hidden="hidden" id="canvas" width=750 height="1334" style="width: 100%;margin: 0;"></canvas>
+
+
+<p style="color:#f58220;font-size: 4em">来，长按图片保存，然后尽情发朋友圈吧，不用谢我，我叫红领巾！</p>
+
+<script>
+    var cvs = document.getElementById('canvas');
+    var i_name = document.getElementById('name');
+    var i_avt = document.getElementById('avt');
+    var i_mon = document.getElementById('mon');
+    var i_time = document.getElementById('time');
+    var imgcvs = document.getElementById('cvs');
+
+    /*初始化背景文件*/
+    var bgimg = new Image();
+    bgimg.src='./background.png';
+    /*初始化头像文件*/
+    var defaultAvt= document.getElementById('defaultAvt');
+    /*首次绘制*/
+    bgimg.onload = function(){
+        cvs.getContext('2d').drawImage(defaultAvt,295,195,160,160);
+        drawRedpack(cvs,i_avt.files[0],i_name.value,i_mon.value,i_time.value);
+        var data = cvs.toDataURL();
+        if(imgcvs.src !=data){
+            imgcvs.src = data;
+        }
+    };
+
+    /*文件上传注册事件*/
+    var reader = new FileReader();
+    var avtfile = document.getElementById('avt');
+    reader.onload = function(){
+        defaultAvt.src = this.result;
+        drawRedpack(cvs,defaultAvt,i_name.value,i_mon.value,i_time.value);
+        /*更新图片标签*/
+        var data = cvs.toDataURL();
+        if(imgcvs.src !=data){
+            imgcvs.src = data;
+        }
+    };
+
+
+    /*添加监听*/
+    i_name.addEventListener('change',function(){
+        /*绘图*/
+        drawRedpack(cvs,defaultAvt,i_name.value,i_mon.value,i_time.value);
+        /*更新图片标签*/
+        var data = cvs.toDataURL();
+        if(imgcvs.src !=data){
+            imgcvs.src = data;
+        }
+    });
+    i_avt.addEventListener('change',function(){
+        /*更新头像*/
+        reader.readAsDataURL(avtfile.files[0]);
+        /*绘图*/
+        drawRedpack(cvs,defaultAvt,i_name.value,i_mon.value,i_time.value)
+        /*更新图片标签*/
+        var data = cvs.toDataURL();
+        if(imgcvs.src !=data){
+            imgcvs.src = data;
+        }
+    });
+    i_mon.addEventListener('change',function(){
+        /*绘图*/
+        drawRedpack(cvs,defaultAvt,i_name.value,i_mon.value,i_time.value);
+        /*更新图片标签*/
+        var data = cvs.toDataURL();
+        if(imgcvs.src !=data){
+            imgcvs.src = data;
+        }
+    });
+    i_time.addEventListener('change',function(){
+        /*绘图*/
+        drawRedpack(cvs,defaultAvt,i_name.value,i_mon.value,i_time.value);
+        /*更新图片标签*/
+        var data = cvs.toDataURL();
+        if(imgcvs.src !=data){
+            imgcvs.src = data;
+        }
+    });
+
+    /*绘制方法*/
+    function drawRedpack(cvs,a,n,m,t){
+        var ctx = cvs.getContext('2d');
+        /*数据初始化*/
+        var avt=a||null;
+        var name=n||'陈宽同学';
+        var mon = Number(m)||52013.14;
+        var time=t||'13:14';
+
+        /*绘制头像*/
+        if(avt){
+            ctx.drawImage(avt,295,195,160,160);
+        }
+        ctx.save();
+        ctx.drawImage(bgimg,0,0,cvs.width,cvs.height,0,0,cvs.width,cvs.height);
+        /*绘制文字*/
+        ctx.font = '8em Arial';
+        ctx.fillStyle = '#000';
+        ctx.textAlign = 'center';
+        /*绘制钱*/
+        ctx.fillText(mon.toFixed(2),375, 600);
+        ctx.fillStyle = '#808080';
+        ctx.font = '2em Arial';
+        ctx.fillText('元',375+78*(mon.toFixed(2).length-0.5)/2, 600);
+        /*绘制时间*/
+        ctx.fillStyle='#fff';
+        ctx.font='1.5em Arial';
+        ctx.fillText(time,375,30);
+        /*绘制姓名*/
+        ctx.font='2em Arial';
+        ctx.fillStyle='#202020';
+        ctx.fillText(name+'的红包',375,410);
+        ctx.restore();
+    }
+
+
+</script>
+</body>
+</html>
